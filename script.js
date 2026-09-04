@@ -128,19 +128,37 @@
     });
   }
 
-  if (form && formStatus) {
-    form.addEventListener('submit', function (event) {
-      event.preventDefault();
-      var name = form.querySelector('#parentName').value.trim();
-      var phone = form.querySelector('#parentPhone').value.trim();
+if (form && formStatus) {
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
 
-      if (!name || !phone) {
-        formStatus.textContent = 'Please share your name and phone number so we can reach you.';
-        return;
-      }
+    var name = form.querySelector('#parentName').value.trim();
+    var phone = form.querySelector('#parentPhone').value.trim();
+    var admissionClass = form.querySelector('#admissionClass').value.trim();
+    var message = form.querySelector('#enquiryMessage').value.trim();
 
-      formStatus.textContent = 'Thank you, ' + name.split(' ')[0] + '. The school office will contact you shortly at ' + phone + '.';
-      form.reset();
-    });
-  }
+    if (!name || !phone) {
+      formStatus.textContent =
+        'Please share your name and phone number so we can reach you.';
+      return;
+    }
+
+    var whatsappMessage =
+      'NEW ADMISSION ENQUIRY\n\n' +
+      'Parent Name: ' + name + '\n' +
+      'Phone: ' + phone + '\n' +
+      'Class Applying For: ' +
+      (admissionClass || 'Not specified') + '\n' +
+      'Message: ' +
+      (message || 'No message');
+
+    var whatsappUrl =
+      'https://wa.me/916207350490?text=' +
+      encodeURIComponent(whatsappMessage);
+
+    formStatus.textContent = 'Opening WhatsApp…';
+
+    window.open(whatsappUrl, '_blank');
+  });
+}
 })();
